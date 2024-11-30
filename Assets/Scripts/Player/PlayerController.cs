@@ -9,13 +9,15 @@ namespace Player
         [SerializeField] private int _maxJumpCount = 2;
         [SerializeField] private AudioSource _moveAudio;
         [SerializeField] private AudioSource _landingAudio;
-
+        
+        private EchoEffect _echoEffect;
         private int _jumpCount;
         private Rigidbody2D _rb;
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
+            _echoEffect = GetComponent<EchoEffect>();
             _jumpCount = 0;
         }
     
@@ -26,6 +28,7 @@ namespace Player
             if (isJumpRequested && CanJump())
             {
                 Jump();
+                _echoEffect.CanShowEcho(true);
             }
         }
 
