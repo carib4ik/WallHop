@@ -13,6 +13,7 @@ namespace Player
         private EchoEffect _echoEffect;
         private int _jumpCount;
         private Rigidbody2D _rb;
+        private bool _isGrounded;
 
         private void Awake()
         {
@@ -34,10 +35,19 @@ namespace Player
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.collider.CompareTag(GlobalConstants.FLOOR_TAG))
+            if (other.collider.CompareTag(GlobalConstants.FLOOR_TAG) && !_isGrounded)
             {
                 _landingAudio.Play();
                 _jumpCount = _maxJumpCount;
+                _isGrounded = true;
+            }
+        }
+        
+        private void OnCollisionExit2D(Collision2D collision2D)
+        {
+            if (collision2D.collider.CompareTag(GlobalConstants.FLOOR_TAG))
+            {
+                _isGrounded = false;
             }
         }
 
