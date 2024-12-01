@@ -70,5 +70,10 @@ namespace Player
         {
             return _jumpCount > 0;
         }
+        
+        public void DestroyPlayer()
+        {
+            Destroy(gameObject);
+        }
     }
 }
