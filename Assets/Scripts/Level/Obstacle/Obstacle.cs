@@ -37,6 +37,13 @@ namespace Level.Obstacle
             }
         }
         
+        public void Initialize(float height)
+        {
+            var newSize = new Vector2(_sprite.size.x, height);
+            _sprite.size = newSize;
+        }
+        
+        
         /// <summary>
         /// Перед препятсвием стоит триггер, который вызывает перемещение препятствия по координате по "y" 
         /// </summary>
