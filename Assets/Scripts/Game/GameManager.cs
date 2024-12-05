@@ -2,6 +2,7 @@ using Level;
 using Level.Obstacle;
 using Level.Point;
 using Player;
+using UI;
 using UnityEngine;
 
 namespace Game
@@ -13,11 +14,14 @@ namespace Game
         [SerializeField] private ObstacleController _obstacleController;
         [SerializeField] private PlayerController _player;
         [SerializeField] private LevelMover _levelMover;
+        [SerializeField] private ScoreController _scoreController;
+        [SerializeField] private ScoreView _scoreView;
         
         private void Awake()
         {
             _obstacleController.ObstacleChangedPosition += OnObstacleChangedPosition;
-            _pointController.RewardAdded += OnRewardAdded;
+            _pointController.RewardAdded += _scoreController.AddScore;
+            _scoreController.ScoreChanged += _scoreView.UpdateScoreLabel;
             _player.PlayerDied += OnPlayerDied;
         }
         
@@ -36,18 +40,9 @@ namespace Game
             }
         }
         
-        /// <summary>
-        /// Обработчик события сбора поинтов.
-        /// </summary>
-        private void OnRewardAdded(int rewardPerPoint)
-        {
-            Debug.Log(rewardPerPoint);
-        }
-        
         private void OnDestroy()
         {
             _obstacleController.ObstacleChangedPosition -= OnObstacleChangedPosition;
-            _pointController.RewardAdded -= OnRewardAdded;
             _player.PlayerDied -= OnPlayerDied;
         }
         
