@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,6 +9,9 @@ namespace Level.Obstacle
 {
     public class ObstacleController : MonoBehaviour
     {
+        // Событие, срабатывающее при изменении позиции препятствия
+        public event Action<Vector3> ObstacleChangedPosition;
+        
         private const int COUNT_INITIAL_OBSTACLES = 10;
 
         [SerializeField] private Obstacle _obstaclePrefab;
@@ -16,6 +21,7 @@ namespace Level.Obstacle
         [SerializeField] private float _maxObstacleHeight = 1.6f;
         [SerializeField] private float _minObstaclePositionY = -0.5f;
         [SerializeField] private float _maxObstaclePositionY = -2.5f;
+        [SerializeField] private float _destroyObstacleDuration = 0.3f;
 
         private readonly Queue<Obstacle> _obstacles = new Queue<Obstacle>();
 
@@ -61,6 +67,12 @@ namespace Level.Obstacle
             var previousPosition = GetPreviousPosition(previousObstacle);
             var nextRandomPosition = GetNextRandomPosition(previousPosition);
             obstacle.transform.position = nextRandomPosition;
+            
+            if (_obstacles.Count > 1)
+            {
+                var positionBetweenObstacle = (previousPosition + obstacle.transform.position) / 2;
+                ObstacleChangedPosition?.Invoke(positionBetweenObstacle);
+            }
         }
         
         private Vector3 GetPreviousPosition(Obstacle previousObstacle)
@@ -99,6 +111,22 @@ namespace Level.Obstacle
             foreach (var obstacle in _obstacles)
             {
                 obstacle.PlayerPassedObstacle -= OnPlayerPassed;
+            }
+        }
+        
+        /// <summary>
+        /// Метод уничтожает все препятствия на уровне с анимацией уменьшения.
+        /// </summary>
+        public void DestroyAllObstacles()
+        {
+            while(_obstacles.Count > 0)
+            {
+                var obstacle = _obstacles.Dequeue();
+                obstacle.PlayerPassedObstacle -= OnPlayerPassed;
+                obstacle.transform
+                    .DOScaleX(0f, _destroyObstacleDuration)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() => Destroy(obstacle.gameObject));
             }
         }
     }

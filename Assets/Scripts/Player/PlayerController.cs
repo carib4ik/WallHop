@@ -1,3 +1,4 @@
+using System;
 using Game;
 using UnityEngine;
 
@@ -5,6 +6,10 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        // Событие, вызываемое при смерти игрока.
+        public event Action PlayerDied;
+        
+        [SerializeField] private GameObject _playerDiedFxPrefab;
         [SerializeField] private float _jumpForce = 6;
         [SerializeField] private int _maxJumpCount = 2;
         [SerializeField] private AudioSource _moveAudio;
@@ -73,6 +78,8 @@ namespace Player
         
         public void DestroyPlayer()
         {
+            Instantiate(_playerDiedFxPrefab, transform.position, Quaternion.identity);
+            PlayerDied?.Invoke();
             Destroy(gameObject);
         }
     }

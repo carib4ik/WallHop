@@ -195,6 +195,7 @@ Transform:
   m_Children:
   - {fileID: 789869912}
   - {fileID: 1144979075}
+  - {fileID: 1043464099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -464,6 +465,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorPrefab: {fileID: 1100650426944141920, guid: 3cbf3f792de09b640a08bb8e39287a97, type: 3}
   _startPosition: {x: 0, y: -4.68, z: 0}
+--- !u!1 &1043464098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1043464099}
+  - component: {fileID: 1043464100}
+  m_Layer: 0
+  m_Name: PointController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1043464099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043464098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 194030274}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1043464100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043464098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009eea0ab3ac456a85c300fe423d6470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointPrefab: {fileID: 5273655522448607216, guid: d3a5ac301cd355943a9750a9e0c3af4e, type: 3}
+  _pointPositionY: -1.5
+  _rewardPerPoint: 1
 --- !u!1 &1144979074
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,6 +563,7 @@ MonoBehaviour:
   _maxObstacleHeight: 1.6
   _minObstaclePositionY: -0.5
   _maxObstaclePositionY: -2.5
+  _destroyObstacleDuration: 0.3
 --- !u!1 &1152776183
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +647,55 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 5, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1183184048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1183184050}
+  - component: {fileID: 1183184049}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1183184049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183184048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c524952cd624474b78997d44c15df7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointSpawnProbability: 0.7
+  _pointController: {fileID: 1043464100}
+  _obstacleController: {fileID: 1144979076}
+  _player: {fileID: 1663962233}
+  _levelMover: {fileID: 194030273}
+--- !u!4 &1183184050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183184048}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.320975, y: -0.2480326, z: 0.061306354}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -707,6 +805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d81f294279c22044a1f3543d2e90f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerDiedFxPrefab: {fileID: 668977754387144315, guid: d8214c2bcf275ef4f97ae1e9d4d88e06, type: 3}
   _jumpForce: 6
   _maxJumpCount: 2
   _moveAudio: {fileID: 1663962237}
@@ -1092,3 +1191,4 @@ SceneRoots:
   - {fileID: 1663962232}
   - {fileID: 28213464}
   - {fileID: 194030274}
+  - {fileID: 1183184050}
