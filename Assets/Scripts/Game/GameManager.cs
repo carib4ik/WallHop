@@ -27,6 +27,8 @@ namespace Game
         
         private void Awake()
         {
+            Application.targetFrameRate = 60;
+            
             _obstacleController.ObstacleChangedPosition += OnObstacleChangedPosition;
             _pointController.RewardAdded += _scoreController.AddScore;
             _scoreController.ScoreChanged += _scoreView.UpdateScoreLabel;
