@@ -1,14 +1,17 @@
+using System.Collections;
 using Level;
 using Level.Obstacle;
 using Level.Point;
 using Player;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private float _sceneChangeDelay = 1f;
         [SerializeField] [Range(0.1f, 1)] private float _pointSpawnProbability = 0.7f;
         [SerializeField] private PointController _pointController;
         [SerializeField] private ObstacleController _obstacleController;
@@ -29,6 +32,16 @@ namespace Game
             _scoreController.ScoreChanged += _scoreView.UpdateScoreLabel;
             _scoreController.ScoreChanged += OnScoreChanged;
             _player.PlayerDied += OnPlayerDied;
+        }
+        
+        /// <summary>
+        /// Загружает сцену Game Over с небольшой задержкой после смерти игрока,
+        /// чтобы успели проиграться анимация и звук смерти игрока
+        /// </summary>
+        private IEnumerator LoadGameOverSceneWithDelay()
+        {
+            yield return new WaitForSeconds(_sceneChangeDelay);
+            SceneManager.LoadSceneAsync(GlobalConstants.GAME_OVER_SCENE);
         }
         
         /// <summary>
@@ -81,6 +94,8 @@ namespace Game
             _levelMover.enabled = false;
             _obstacleController.DestroyAllObstacles();
             _pointController.DestroyAllPoints();
+            
+            StartCoroutine(LoadGameOverSceneWithDelay());
         }
     }
 }
