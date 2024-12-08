@@ -16,12 +16,18 @@ namespace Game
         [SerializeField] private LevelMover _levelMover;
         [SerializeField] private ScoreController _scoreController;
         [SerializeField] private ScoreView _scoreView;
+        [SerializeField] private BackgroundColorController _backgroundColorController;
+        [SerializeField] private int _difficultyIncreasePeriodInPoints = 10;
+        
+        [Tooltip("Points required to change background color")]
+        [SerializeField] private int _colorChangePeriodInPoints = 5;
         
         private void Awake()
         {
             _obstacleController.ObstacleChangedPosition += OnObstacleChangedPosition;
             _pointController.RewardAdded += _scoreController.AddScore;
             _scoreController.ScoreChanged += _scoreView.UpdateScoreLabel;
+            _scoreController.ScoreChanged += OnScoreChanged;
             _player.PlayerDied += OnPlayerDied;
         }
         
@@ -40,10 +46,33 @@ namespace Game
             }
         }
         
+        /// <summary>
+        /// Обработчик события изменения очков
+        /// </summary>
+        private void OnScoreChanged(int score)
+        {
+            _scoreView.UpdateScoreLabel(score);
+            
+            // При достижении определенного количества очков, меняем цвет фона
+            if (score % _colorChangePeriodInPoints == 0)
+            {
+                _backgroundColorController.ChangeColor();
+            }
+            
+            // При достижении определенного количества очков, меняем скорость уровня
+            if (score % _difficultyIncreasePeriodInPoints == 0)
+            {
+                _levelMover.IncreaseSpeed();
+            }
+        }
+        
         private void OnDestroy()
         {
             _obstacleController.ObstacleChangedPosition -= OnObstacleChangedPosition;
             _player.PlayerDied -= OnPlayerDied;
+            _pointController.RewardAdded -= _scoreController.AddScore;
+            _scoreController.ScoreChanged -= _scoreView.UpdateScoreLabel;
+            _scoreController.ScoreChanged -= OnScoreChanged;
         }
         
         private void OnPlayerDied()
